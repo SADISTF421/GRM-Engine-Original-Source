@@ -1,0 +1,4 @@
+# Generated build artifacts retained in the original engine-src.rar.
+/intermediate/
+# Debug symbols are retained in the original archive, not in this Git snapshot.
+/binaries/*.pdb

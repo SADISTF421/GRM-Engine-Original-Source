@@ -1,0 +1,493 @@
+#include "stdafx.h"
+#include "bloodsucker.h"
+#include "bloodsucker_state_manager.h"
+#include "../../../../skeletoncustom.h"
+#include "../../../actor.h"
+#include "../../../ActorEffector.h"
+#include "../../../../skeletonanimated.h"
+#include "../../../level.h"
+#include "../../../material_manager.h"
+#include "bloodsucker_vampire_effector.h"
+#include "../../../detail_path_manager.h"
+#include "../../../level_debug.h"
+#include "../monster_velocity_space.h"
+#include "../../../gamepersistent.h"
+#include "../../../game_object_space.h"
+
+#include "../control_animation_base.h"
+#include "../control_movement_base.h"
+#include "../control_rotation_jump.h"
+
+#include "../../../sound_player.h"
+#include "../../../ActorCondition.h"
+
+
+CAI_Bloodsucker::CAI_Bloodsucker()
+{
+	StateMan						= xr_new<CStateManagerBloodsucker>	(this);
+	m_alien_control.init_external	(this);
+	
+	com_man().add_ability			(ControlCom::eControlRunAttack);
+	com_man().add_ability			(ControlCom::eControlRotationJump);
+
+	invisible_vel.set				(0.1f, 0.1f);
+	m_force_visibility_state		= -1;
+	m_script_hidden					= false;
+
+	EnemyMemory.init_external		(this, 40000);
+}
+
+CAI_Bloodsucker::~CAI_Bloodsucker()
+{
+	xr_delete	(StateMan);
+}
+
+void CAI_Bloodsucker::Load(LPCSTR section) 
+{
+	inherited::Load(section);
+
+	anim().AddReplacedAnim(&m_bDamaged,			eAnimRun,		eAnimRunDamaged);
+	anim().AddReplacedAnim(&m_bDamaged,			eAnimWalkFwd,	eAnimWalkDamaged);
+	anim().AddReplacedAnim(&m_bDamaged,			eAnimStandIdle,	eAnimStandDamaged);
+	anim().AddReplacedAnim(&m_bRunTurnLeft,		eAnimRun,		eAnimRunTurnLeft);
+	anim().AddReplacedAnim(&m_bRunTurnRight,	eAnimRun,		eAnimRunTurnRight);
+
+
+	anim().accel_load			(section);
+	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRunTurnLeft);
+	anim().accel_chain_add		(eAnimWalkFwd,		eAnimRunTurnRight);
+	anim().accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
+
+	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
+	movement().detail().add_velocity(MonsterMovement::eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
+
+	invisible_particle_name			= pSettings->r_string(section,"Particle_Invisible");
+	invisible_run_particles_name	= pSettings->r_string(section,"Particles_Invisible_Tracks");
+	m_run_particles_freq			= pSettings->r_u32(section,"Particles_Invisible_Tracks_Freq");
+
+	LoadVampirePPEffector			(pSettings->r_string(section,"vampire_effector"));
+
+	SVelocityParam &velocity_none		= move().get_velocity(MonsterMovement::eVelocityParameterIdle);	
+	SVelocityParam &velocity_turn		= move().get_velocity(MonsterMovement::eVelocityParameterStand);
+	SVelocityParam &velocity_walk		= move().get_velocity(MonsterMovement::eVelocityParameterWalkNormal);
+	SVelocityParam &velocity_run		= move().get_velocity(MonsterMovement::eVelocityParameterRunNormal);
+	SVelocityParam &velocity_walk_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterWalkDamaged);
+	SVelocityParam &velocity_run_dmg	= move().get_velocity(MonsterMovement::eVelocityParameterRunDamaged);
+	SVelocityParam &velocity_steal		= move().get_velocity(MonsterMovement::eVelocityParameterSteal);
+	
+	anim().AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &velocity_none,		PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimStandDamaged,	"stand_damaged_",		-1, &velocity_none,		PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &velocity_turn,		PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &velocity_turn,		PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimSleep,			"lie_sleep_",			-1, &velocity_none,		PS_LIE,	  	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimWalkFwd,		"stand_walk_fwd_",		-1, &velocity_walk,		PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimWalkDamaged,	"stand_walk_fwd_dmg_",	-1, &velocity_walk_dmg,	PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimRun,			"stand_run_",			-1,	&velocity_run,		PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&velocity_run_dmg,	PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+
+	anim().AddAnim(eAnimRunTurnLeft,	"stand_run_turn_left_",	-1, &velocity_run,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimRunTurnRight,	"stand_run_turn_right_",-1, &velocity_run,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimScared,			"stand_scared_",		-1, &velocity_none,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
+
+	anim().AddAnim(eAnimCheckCorpse,	"stand_check_corpse_",	-1,	&velocity_none,		PS_STAND, 	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimEat,			"sit_eat_",				-1, &velocity_none,		PS_SIT,		"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	
+	anim().AddAnim(eAnimDie,			"stand_idle_",			-1, &velocity_none,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	
+	anim().AddAnim(eAnimAttack,			"stand_attack_",		-1, &velocity_turn,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimAttackRun,		"stand_attack_run_",	-1, &velocity_run,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+
+	anim().AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &velocity_none,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimSitIdle,		"sit_idle_",			-1, &velocity_none,		PS_SIT,		"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &velocity_none,		PS_SIT,		"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimSitToSleep,		"sit_sleep_down_",		-1, &velocity_none,		PS_SIT,		"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &velocity_none,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	
+	anim().AddAnim(eAnimSteal,			"stand_steal_",			-1, &velocity_steal,	PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	
+	anim().AddAnim(eAnimThreaten,		"stand_threaten_",		-1, &velocity_none,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	anim().AddAnim(eAnimMiscAction_00,	"stand_to_aggressive_",	-1, &velocity_none,		PS_STAND,	"fx_run_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
+
+	// define transitions
+	//	anim().AddTransition(PS_STAND,			eAnimThreaten,	eAnimMiscAction_00,	false);
+	anim().AddTransition(eAnimStandSitDown,	eAnimSleep,		eAnimSitToSleep,	false);
+	anim().AddTransition(PS_STAND,			eAnimSleep,		eAnimStandSitDown,	true);
+	anim().AddTransition(PS_STAND,			PS_SIT,			eAnimStandSitDown,	false);
+	anim().AddTransition(PS_STAND,			PS_LIE,			eAnimStandSitDown,	false);
+	anim().AddTransition(PS_SIT,			PS_STAND,		eAnimSitStandUp,	false);
+	anim().AddTransition(PS_LIE,			PS_STAND,		eAnimSitStandUp,	false);
+
+	// define links from Action to animations
+	anim().LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+	anim().LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
+	anim().LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
+	anim().LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	anim().LinkAction(ACT_WALK_BKWD,	eAnimWalkBkwd);
+	anim().LinkAction(ACT_RUN,			eAnimRun);
+	anim().LinkAction(ACT_EAT,			eAnimEat);
+	anim().LinkAction(ACT_SLEEP,		eAnimSleep);
+	anim().LinkAction(ACT_REST,			eAnimSitIdle);
+	anim().LinkAction(ACT_DRAG,			eAnimWalkBkwd);
+	anim().LinkAction(ACT_ATTACK,		eAnimAttack);
+	anim().LinkAction(ACT_STEAL,		eAnimSteal);
+	anim().LinkAction(ACT_LOOK_AROUND,	eAnimLookAround); 
+
+	#ifdef DEBUG	
+		anim().accel_chain_test		();
+	#endif
+
+	// load other misc stuff
+	m_vampire_wound					= pSettings->r_float(section,"Vampire_Wound");
+	m_vampire_gain_health			= pSettings->r_float(section,"Vampire_GainHealth");
+}
+
+
+void CAI_Bloodsucker::reinit()
+{
+	inherited::reinit			();
+	CInvisibility::reinit		();
+	CControlledActor::reinit	();
+
+	if(CCustomMonster::use_simplified_visual())	return;
+
+	Bones.Reset					();
+
+	com_man().ta_fill_data(anim_triple_vampire, "vampire_0", "vampire_1", "vampire_2", TA_EXECUTE_LOOPED, TA_DONT_SKIP_PREPARE, ControlCom::eCapturePath | ControlCom::eCaptureMovement);
+	
+	m_alien_control.reinit();
+
+	m_force_visibility_state	= -1;
+	m_script_hidden				= false;
+	state_invisible				= CInvisibility::is_active();
+	m_last_invisible_run_play	= 0;
+
+	//com_man().add_rotation_jump_data("run_turn_r_0","run_turn_r_1","run_turn_r_0","run_turn_r_1", PI - 0.01f, SControlRotationJumpData::eStopAtOnce | SControlRotationJumpData::eRotateOnce);
+	com_man().add_rotation_jump_data("run_turn_l_0","run_turn_l_1","run_turn_r_0","run_turn_r_1", PI_DIV_2);
+}
+
+void CAI_Bloodsucker::reload(LPCSTR section)
+{
+	inherited::reload(section);
+	CInvisibility::reload(section);
+
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Grasp"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 4,	MonsterSound::eBaseChannel,	eVampireGrasp,					"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Sucking"),			DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 3,	MonsterSound::eBaseChannel,	eVampireSucking,				"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_Hit"),				DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 2,	MonsterSound::eBaseChannel,	eVampireHit,					"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Vampire_StartHunt"),			DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 5,	MonsterSound::eBaseChannel,	eVampireStartHunt,				"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Invisibility_Change_On"),	DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eCriticalPriority,	MonsterSound::eChannelIndependent << 1,	eChangeVisibility1,	"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Invisibility_Change_Off"),	DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eCriticalPriority,	MonsterSound::eChannelIndependent << 1,	eChangeVisibility2,	"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Growl"),						DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eHighPriority + 6,	MonsterSound::eBaseChannel,	eGrowl,							"bip01_head");
+	sound().add(pSettings->r_string(section,"Sound_Alien"),						DEFAULT_SAMPLE_COUNT,	SOUND_TYPE_MONSTER_ATTACKING, MonsterSound::eCriticalPriority,	u32(MonsterSound::eCaptureAllChannels),	eAlien,				"bip01_head");
+}
+
+
+void CAI_Bloodsucker::LoadVampirePPEffector(LPCSTR section)
+{
+	pp_vampire_effector.duality.h			= pSettings->r_float(section,"duality_h");
+	pp_vampire_effector.duality.v			= pSettings->r_float(section,"duality_v");
+	pp_vampire_effector.gray				= pSettings->r_float(section,"gray");
+	pp_vampire_effector.blur				= pSettings->r_float(section,"blur");
+	pp_vampire_effector.noise.intensity		= pSettings->r_float(section,"noise_intensity");
+	pp_vampire_effector.noise.grain			= pSettings->r_float(section,"noise_grain");
+	pp_vampire_effector.noise.fps			= pSettings->r_float(section,"noise_fps");
+	VERIFY(!fis_zero(pp_vampire_effector.noise.fps));
+
+	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &pp_vampire_effector.color_base.r, &pp_vampire_effector.color_base.g, &pp_vampire_effector.color_base.b);
+	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &pp_vampire_effector.color_gray.r, &pp_vampire_effector.color_gray.g, &pp_vampire_effector.color_gray.b);
+	sscanf(pSettings->r_string(section,"color_add"),	"%f,%f,%f", &pp_vampire_effector.color_add.r,  &pp_vampire_effector.color_add.g,  &pp_vampire_effector.color_add.b);
+}
+
+
+
+
+void  CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
+{
+	CAI_Bloodsucker*	this_class = static_cast<CAI_Bloodsucker*> (B->Callback_Param);
+
+	this_class->Bones.Update(B, Device.dwTimeGlobal);
+}
+
+
+void CAI_Bloodsucker::vfAssignBones()
+{
+	// Установка callback на кости
+
+	bone_spine =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine"));
+	bone_head =		&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
+	if(!PPhysicsShell())//нельзя ставить колбеки, если создан физ шел - у него стоят свои колбеки!!!
+	{
+		bone_spine->set_callback(bctCustom,BoneCallback,this);
+		bone_head->set_callback(bctCustom,BoneCallback,this);
+	}
+
+	// Bones settings
+	Bones.Reset();
+	Bones.AddBone(bone_spine, AXIS_X);	Bones.AddBone(bone_spine, AXIS_Y);
+	Bones.AddBone(bone_head, AXIS_X);	Bones.AddBone(bone_head, AXIS_Y);
+}
+
+
+//#define MAX_BONE_ANGLE PI_DIV_4
+
+void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
+{
+	//// получаем вектор направления к источнику звука и его мировые углы
+	//float		yaw,pitch;
+	//to_dir.getHP(yaw,pitch);
+
+	//// установить параметры вращения по yaw
+	//float cur_yaw = -movement().m_body.current.yaw;						// текущий мировой угол монстра
+	//float bone_angle;											// угол для боны	
+
+	//float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
+
+	//if (angle_difference(cur_yaw,yaw) <= MAX_BONE_ANGLE) {		// bone turn only
+	//	bone_angle = dy;
+	//} else {													// torso & bone turn 
+	//	if (movement().IsMoveAlongPathFinished() || !movement().enabled()) movement().m_body.target.yaw = angle_normalize(-yaw);
+	//	if (dy / 2 < MAX_BONE_ANGLE) bone_angle = dy / 2;
+	//	else bone_angle = MAX_BONE_ANGLE;
+	//}
+
+	//bone_angle /= 2;
+	//if (from_right(yaw,cur_yaw)) bone_angle *= -1.f;
+
+	//Bones.SetMotion(bone_spine, AXIS_X, bone_angle, bone_turn_speed, 100);
+	//Bones.SetMotion(bone_head,	AXIS_X, bone_angle, bone_turn_speed, 100);
+
+	//// установить параметры вращения по pitch
+	//clamp(pitch, -MAX_BONE_ANGLE, MAX_BONE_ANGLE);
+	//pitch /= 2; 
+
+	//Bones.SetMotion(bone_spine, AXIS_Y, pitch, bone_turn_speed, 100);
+	//Bones.SetMotion(bone_head,	AXIS_Y, pitch, bone_turn_speed, 100);	
+}
+
+void CAI_Bloodsucker::ActivateVampireEffector(float max_dist)
+{
+	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
+	if (pA) {
+		Actor()->Cameras().AddCamEffector(xr_new<CVampireCameraEffector>(3.0f, 5.f, max_dist));
+		Actor()->Cameras().AddPPEffector(xr_new<CVampirePPEffector>(pp_vampire_effector, 3.0f));
+	}
+}
+
+void CAI_Bloodsucker::SatisfyVampire ()
+{
+	float health				=	conditions().GetHealth();
+	health						+=	m_vampire_gain_health;
+
+	health						=	_min(health, conditions().GetMaxHealth());
+	conditions().SetHealth			(health);
+}
+
+void CAI_Bloodsucker::CheckSpecParams(u32 spec_params)
+{
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+		com_man().seq_run(anim().get_motion_id(eAnimCheckCorpse));
+	}
+
+	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
+		anim().SetCurAnim(eAnimThreaten);
+		return;
+	}
+
+	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {
+		anim().SetCurAnim(eAnimLookAround);
+		return;
+	}
+
+}
+
+BOOL CAI_Bloodsucker::net_Spawn (CSE_Abstract* DC) 
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
+	vfAssignBones	();
+
+	// спаунится нивидимым
+	setVisible		(false);
+
+	return(TRUE);
+}
+
+void CAI_Bloodsucker::UpdateCL()
+{
+	inherited::UpdateCL				();
+	CInvisibility::frame_update		();
+	CControlledActor::frame_update	();
+	
+	if (state_invisible && control().path_builder().is_moving_on_path()) {
+		if (m_last_invisible_run_play + m_run_particles_freq < Device.dwTimeGlobal) {
+			m_last_invisible_run_play	= Device.dwTimeGlobal + Random.randI(m_run_particles_freq - m_run_particles_freq/2, m_run_particles_freq + m_run_particles_freq/2);
+			play_hidden_run_particles	();
+		}
+	}
+}
+
+
+void CAI_Bloodsucker::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+	
+	if (!g_Alive())	setVisible(TRUE);
+	CInvisibility::schedule_update();
+
+	if (state_invisible && g_Alive() && (m_fCurSpeed != 0)) {
+		SGameMtlPair* mtl_pair		= material().get_current_pair();
+		if (!mtl_pair) return;
+
+		if (mtl_pair->CollideParticles.empty()) return;
+
+		LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+	
+		//отыграть партиклы столкновения материалов
+		CParticlesObject* ps = CParticlesObject::Create(ps_name,TRUE);
+
+		// вычислить позицию и направленность партикла
+		Fmatrix pos; 
+
+		// установить направление
+		pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
+		Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
+		// установить позицию
+		pos.c.set(CStepManager::get_foot_position(eFrontLeft));
+
+		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
+		GamePersistent().ps_needtoplay.push_back(ps);
+	}
+
+	if (m_alien_control.active())	sound().play(eAlien);
+}
+
+void CAI_Bloodsucker::set_alien_control(bool val)
+{
+	val ? m_alien_control.activate() : m_alien_control.deactivate();
+}
+
+void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
+{
+	setVisible(b_visibility && !m_script_hidden);
+}
+
+void CAI_Bloodsucker::on_activate()
+{
+	CInvisibility::on_activate();
+	
+	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
+	sound().play					(CAI_Bloodsucker::eChangeVisibility1);
+
+	state_invisible = true;
+}
+
+void CAI_Bloodsucker::on_deactivate()
+{
+	CInvisibility::on_deactivate();
+	
+	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
+	sound().play					(CAI_Bloodsucker::eChangeVisibility2);
+
+	state_invisible = false;
+}
+
+void CAI_Bloodsucker::force_visibility_state(int state)
+{
+	if (state == m_force_visibility_state && state >= 0)
+		return;
+	m_force_visibility_state = state;
+
+	if (state < 0)
+	{
+		CInvisibility::set_manual_switch(false);	// energy rules again
+		return;
+	}
+
+	CInvisibility::set_manual_switch(true);			// no automatic switching
+	// Outright, not through activate/deactivate: every bloodsucker is born
+	// invisible (CEnergyHolder::reinit), and leaving that state the normal way
+	// plays the shield particles, the blink and the sound - on the player, for
+	// first-person legs, each time an outfit change made them anew.
+	CInvisibility::force_state_quiet(state == 0);
+	state_invisible = (state == 0);
+
+	// net_Spawn hides a bloodsucker and only a blink shows it again - and a forced
+	// state never blinks. So the state is put on the model here, directly.
+	on_change_visibility(state != 0);
+}
+
+void CAI_Bloodsucker::set_script_hidden(bool hidden)
+{
+	m_script_hidden = hidden;
+	on_change_visibility(m_force_visibility_state >= 0 ? m_force_visibility_state != 0 : !CInvisibility::is_active());
+}
+
+void CAI_Bloodsucker::net_Destroy()
+{
+	CInvisibility::deactivate(); 
+	CInvisibility::disable();
+	inherited::net_Destroy();
+}
+
+void CAI_Bloodsucker::Die(CObject* who)
+{
+	CInvisibility::deactivate(); 
+	CInvisibility::disable();
+
+	inherited::Die(who);
+}
+
+void CAI_Bloodsucker::post_fsm_update()
+{
+	inherited::post_fsm_update();
+	
+	EMonsterState state = StateMan->get_state_type();
+	
+	// установить агрессивность
+	bool aggressive =	(is_state(state, eStateAttack)) || 
+						(is_state(state, eStatePanic))	|| 
+						(is_state(state, eStateHitted));
+
+	CEnergyHolder::set_aggressive(aggressive);
+}
+
+bool CAI_Bloodsucker::check_start_conditions(ControlCom::EControlType type)
+{
+	if (!inherited::check_start_conditions(type))	return false;
+
+	if (type == ControlCom::eControlRunAttack)
+		return (!state_invisible);
+
+	return true;
+}
+
+
+void CAI_Bloodsucker::play_hidden_run_particles()
+{
+	Fmatrix	xform			= XFORM();
+	Fvector pos;
+	pos.set	(Position());
+	pos.y	+= 0.1f;
+
+	xform.translate_over	(pos);
+
+	CParticlesObject*		ps = CParticlesObject::Create(invisible_run_particles_name, TRUE);
+	ps->UpdateParent		(xform, zero_vel);
+	ps->Play				();
+}
+
+void CAI_Bloodsucker::HitEntity(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir)
+{
+	inherited::HitEntity(pEntity,fDamage,impulse,dir);
+
+	EMonsterState state = StateMan->get_state_type();
+	if (is_state(state, eStateExecute) && !com_man().run_attack_is_active()) {
+		VERIFY(Actor());
+		
+		u16 bone_id = smart_cast<CKinematics*>(Actor()->Visual())->LL_BoneID("bip01_head");
+		if (!GodMode())
+			Actor()->conditions().AddWound(m_vampire_wound, ALife::eHitTypeWound, bone_id);
+	}
+}
+

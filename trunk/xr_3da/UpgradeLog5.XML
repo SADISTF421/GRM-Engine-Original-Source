@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="XR_3DA">
+</Property><Property Name="Файл решения" Value="X:\trunk\xr_3da\XR_3DA.sln">
+</Property><Property Name="Date" Value="24 июня 2021 г.">
+</Property><Property Name="Time" Value="14:46">
+</Property><Property Name="Номер записи" Value="5">
+</Property></Properties><Event ErrorLevel="0" Project="XR_3DA" Source="XR_3DA.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="XR_3DA" Source="XR_3DA.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrCPU_Pipe" Source="xrCPU_Pipe\xrCPU_Pipe.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrCPU_Pipe" Source="xrCPU_Pipe\xrCPU_Pipe.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrGame" Source="xrGame\xrGame.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrGame" Source="xrGame\xrGame.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrSound" Source="..\xrSound\xrSound.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrSound" Source="..\xrSound\xrSound.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrCore" Source="..\xrCore\xrCore.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrCore" Source="..\xrCore\xrCore.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrCDB" Source="..\xrCDB\xrCDB.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrCDB" Source="..\xrCDB\xrCDB.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrRender_R1" Source="xrRender_R1\xrRender_R1.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrRender_R1" Source="xrRender_R1\xrRender_R1.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrRender_R2" Source="xrRender_R2\xrRender_R2.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrRender_R2" Source="xrRender_R2\xrRender_R2.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrXMLParser" Source="..\xrXMLParser\xrXMLParser.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrXMLParser" Source="..\xrXMLParser\xrXMLParser.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="default" Source="..\xrODE\contrib\msvc7\ode_default\default.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="default" Source="..\xrODE\contrib\msvc7\ode_default\default.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrParticles" Source="..\xrParticles\xrParticles.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrParticles" Source="..\xrParticles\xrParticles.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrNetServer" Source="..\xrNetServer\xrNetServer.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrNetServer" Source="..\xrNetServer\xrNetServer.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrSE_Factory" Source="..\xrSE_Factory\xrSE_Factory.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrSE_Factory" Source="..\xrSE_Factory\xrSE_Factory.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrCompress" Source="..\xrCompress\xrCompress.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrCompress" Source="..\xrCompress\xrCompress.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="DXT" Source="..\xrDXT\DXT.vcproj" Description="Веб-развертывание на локальном IIS-сервере больше не поддерживается. Инструмент веб-развертывания был удален из параметров проекта.">
+</Event><Event ErrorLevel="1" Project="DXT" Source="..\xrDXT\DXT.vcproj" Description="Приложение было обновлено, чтобы включить параметры, связанные с контролем учетных записей пользователей (UAC), появившемся в Windows Vista. По умолчанию, в Windows Vista при включенном UAC, приложение запускается с теми же привилегиями, что и запустивший его процесс. Это также делает невозможным запуск приложений с технологией виртуализации. Параметры, связанные с UAC можно поменять на странице свойств проекта.">
+</Event><Event ErrorLevel="0" Project="DXT" Source="..\xrDXT\DXT.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="DXT" Source="..\xrDXT\DXT.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrLC" Source="..\xrLC\xrLC.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrLC" Source="..\xrLC\xrLC.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrQSlim" Source="..\xrQSlim\xrQSlim.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrQSlim" Source="..\xrQSlim\xrQSlim.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrDO_Light" Source="..\xrLC\xrDO_Light\xrDO_Light.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrDO_Light" Source="..\xrLC\xrDO_Light\xrDO_Light.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrAI" Source="..\xrAI\xrAI.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrAI" Source="..\xrAI\xrAI.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="ETools" Source="..\ETools\ETools.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="ETools" Source="..\ETools\ETools.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrD3D9-Null" Source="xrGame\xrD3D9-Null\xrD3D9-Null.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrD3D9-Null" Source="xrGame\xrD3D9-Null\xrD3D9-Null.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrGameSpy" Source="xrGame\xrGameSpy\xrGameSpy.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrGameSpy" Source="xrGame\xrGameSpy\xrGameSpy.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Stalker_net" Source="Stalker_Net\Stalker_net.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="Stalker_net" Source="Stalker_Net\Stalker_net.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrStatisticConvert" Source="xrStatisticConvert\xrStatisticConvert.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrStatisticConvert" Source="xrStatisticConvert\xrStatisticConvert.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrLua" Source="..\xrLua\xrLua.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrLua" Source="..\xrLua\xrLua.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Router" Source="..\xrOpenAL\OpenAL-Windows\Router\Router.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="Router" Source="..\xrOpenAL\OpenAL-Windows\Router\Router.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="BugTrap" Source="..\BugTrap\BugTrap.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="BugTrap" Source="..\BugTrap\BugTrap.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="zlib" Source="..\zlib\zlib.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="zlib" Source="..\zlib\zlib.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="minizip" Source="..\minizip\minizip.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="minizip" Source="..\minizip\minizip.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xrCoreStatic" Source="..\xrCore\xrCoreStatic.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="xrCoreStatic" Source="..\xrCore\xrCoreStatic.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="LWO" Source="..\LWO\LWO.vcproj" Description="Проект обновлен успешно.">
+</Event><Event ErrorLevel="3" Project="LWO" Source="..\LWO\LWO.vcproj" Description="Converted">
+</Event></UpgradeLog>

@@ -1,0 +1,2 @@
+# Preserve original bytes, especially legacy Windows-1251 files and CRLF.
+* -text

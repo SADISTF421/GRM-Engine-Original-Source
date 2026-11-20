@@ -1,0 +1,124 @@
+Microsoft (R) Visual C++ Project Builder - Command Line Version 9.00.21022
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Build started: Project: xrGame, Configuration: Release|Win32
+Compiling...
+cl : Command line warning D9035 : option 'Wp64' has been deprecated and will be removed in a future release
+Actor_Weapon.cpp
+Compiling...
+cl : Command line warning D9035 : option 'Wp64' has been deprecated and will be removed in a future release
+Actor.cpp
+.\Actor.cpp(730) :  TODO :   "Dima to Dima : forward-back bone impulse direction has been determined incorrectly!"
+Linking...
+   Creating library x:\libraries\xrGame.lib and object x:\libraries\xrGame.exp
+Generating code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(185) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(186) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(187) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(188) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(391) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(392) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(393) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(395) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(396) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(166) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_abstract.cpp(122) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_abstract.cpp(79) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_abstract.cpp(80) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_abstract.cpp(81) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_abstract.cpp(82) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\game_cl_artefacthunt.cpp(442) : warning C4723: potential divide by 0
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(749) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(750) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(616) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1074) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1075) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1076) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1077) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(693) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(694) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(695) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(604) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(268) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1751) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1562) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1520) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1370) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1373) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1116) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1117) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1118) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1119) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1120) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1121) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1122) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1124) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1125) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1126) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1127) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1128) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1129) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1130) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1131) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1132) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1133) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1134) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1136) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1137) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1138) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1139) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1140) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1144) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1146) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1147) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(1149) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(943) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(944) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(945) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(948) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(832) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.cpp(834) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1439) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1254) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1255) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1257) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1258) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1259) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1260) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(859) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(810) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(811) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(812) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(893) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(772) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(681) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(503) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(504) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(507) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(508) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(510) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(511) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(513) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_items.cpp(514) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1805) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1806) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1626) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1627) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1628) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1629) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1630) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1631) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1632) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1634) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1635) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1636) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(1637) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(912) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(913) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife_monsters.cpp(914) : warning C4702: unreachable code
+1>x:\trunk\xr_3da\xrgame\xrserver_objects_alife.h(219) : warning C4702: unreachable code
+Finished generating code
+Embedding manifest...
+Build log was saved at "file://x:\intermediate\Release\xrGame\BuildLog.htm"
+xrGame - 0 error(s), 107 warning(s)
+done 
