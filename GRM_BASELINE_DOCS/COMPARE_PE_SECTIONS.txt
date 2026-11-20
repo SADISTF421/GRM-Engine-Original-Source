@@ -1,0 +1,52 @@
+
+ XR_3DA.exe
+  .text sizes 745472 745472 different bytes in overlapping section 630567
+  .rdata sizes 233984 233984 different bytes in overlapping section 14844
+  .data sizes 23040 23040 different bytes in overlapping section 262
+  .rsrc sizes 409088 409088 different bytes in overlapping section 0
+  .reloc sizes 55296 55296 different bytes in overlapping section 34752
+  new sections ['.grmnck']
+
+ xrGame.dll
+  .text sizes 4605440 4605440 different bytes in overlapping section 76
+    VA 10146f10 558bec83e4f8 => e9eb844d0090
+    VA 10193906 c7400400000000ff25fc684610cc => 85c0740531d2895004e9ceb32c00
+    VA 10193926 c7400400000000ff2500694610cccccccccccccccc => 85c0741031d28950048991ac000000e9a2b32c00c3
+    VA 10198c83 c5512c => 796348
+    VA 101afa59 72 => eb
+    VA 101f22b3 8b57148b471052508bcbff158c674610 => e948d542009090909090909090909090
+    VA 101f22da 8b7c240c8b8fa4010000 => e962d542009090909090
+    VA 101f279a 8d9b0000 => e961ce42
+    VA 101f279f 00 => 90
+  .rdata sizes 912384 912384 different bytes in overlapping section 0
+  .data sizes 165376 165376 different bytes in overlapping section 0
+  .rsrc sizes 1024 1024 different bytes in overlapping section 0
+  .reloc sizes 619520 619520 different bytes in overlapping section 3
+  new sections ['.grm']
+
+ xrRender_R2.dll
+  .text sizes 453120 453120 different bytes in overlapping section 3
+    VA 100057ab 658f06 => 515809
+  .rdata sizes 60928 60928 different bytes in overlapping section 0
+  .data sizes 9728 9728 different bytes in overlapping section 0
+  .rsrc sizes 1024 1024 different bytes in overlapping section 0
+  .reloc sizes 33792 33792 different bytes in overlapping section 0
+  new sections ['.grmc', '.grmi']
+
+ xrCore.dll
+  .text sizes 164352 164352 different bytes in overlapping section 14
+    VA 1001bcd7 6800000080ffd66801000080ffd6 => 9090909090909090909090909090
+  .rdata sizes 90112 90112 different bytes in overlapping section 20
+  .data sizes 2048 2048 different bytes in overlapping section 0
+  .tls sizes 524800 524800 different bytes in overlapping section 0
+  .rsrc sizes 1536 1536 different bytes in overlapping section 0
+  .reloc sizes 54784 54784 different bytes in overlapping section 0
+  new sections []
+
+ xrLUA.dll
+  .text sizes 216064 216064 different bytes in overlapping section 0
+  .rdata sizes 46592 46592 different bytes in overlapping section 20
+  .data sizes 1024 1024 different bytes in overlapping section 0
+  .rsrc sizes 1024 1024 different bytes in overlapping section 0
+  .reloc sizes 9216 9216 different bytes in overlapping section 0
+  new sections []
